@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mecânica Bertolini</title>
+<meta name="description" content="Oficina mecânica na Mooca desde 1987. Orçamento por escrito antes de qualquer serviço, aprovação item por item pelo WhatsApp e 90 dias de garantia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Barlow:wght@400;500;600&family=Caveat:wght@600&display=swap">
+<style>
+/* Layout: parede de oficina pintada de verde em cima, piso de concreto embaixo; o adesivo de troca de óleo é o único objeto "colado" na página. */
+:root {
+  --concreto: #E8EBE8;
+  --papel: #F7F8F5;
+  --tinta: #1C2420;
+  --tinta-suave: #4E5A54;
+  --linha: #C9D0CB;
+  --verde: #2D5A4B;
+  --verde-texto: #F1F4F1;
+  --amarelo: #F2C230;
+  --caneta: #1F3A8A;
+  --alerta: #A8382C;
+  --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --texto: "Barlow", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --mao: "Caveat", "Segoe Print", "Bradley Hand", cursive;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --concreto: #151B18; --papel: #1D2522; --tinta: #E4E9E5; --tinta-suave: #A3AFA8;
+    --linha: #34403A; --verde: #1F3F35; --verde-texto: #E8EEEA; --amarelo: #E9BC2E;
+    --caneta: #1F3A8A; --alerta: #E07A6E; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --concreto: #151B18; --papel: #1D2522; --tinta: #E4E9E5; --tinta-suave: #A3AFA8;
+  --linha: #34403A; --verde: #1F3F35; --verde-texto: #E8EEEA; --amarelo: #E9BC2E;
+  --caneta: #1F3A8A; --alerta: #E07A6E; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--concreto);
+  color: var(--tinta);
+  font-family: var(--texto);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+.faixa { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.miolo { max-width: 1120px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.02; text-wrap: balance; margin: 0; letter-spacing: 0.005em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--amarelo); outline-offset: 3px; }
+
+/* Parede verde: topo + hero */
+.parede { background: var(--verde); color: var(--verde-texto); }
+.topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; flex-wrap: wrap; }
+.marca { display: flex; flex-direction: column; text-decoration: none; }
+.marca strong { font-family: var(--display); font-size: 1.9rem; font-weight: 800; line-height: 1; }
+.marca span { font-size: 0.9rem; opacity: 0.8; }
+.topo nav { display: flex; gap: 22px; flex-wrap: wrap; font-weight: 500; }
+.topo nav a { text-decoration: none; opacity: 0.88; }
+.topo nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 4px; }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; align-items: center; padding-block: 48px 72px; }
+.hero h1 { font-size: clamp(2.6rem, 6.2vw, 4.6rem); }
+.hero .lead { margin-top: 22px; max-width: 34em; font-size: 1.15rem; opacity: 0.92; }
+.acoes { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 30px; }
+.botao {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 22px; border-radius: 6px; border: 2px solid transparent;
+  font: 600 1rem var(--texto); text-decoration: none; cursor: pointer;
+}
+.botao-zap { background: var(--amarelo); color: #1C2420; }
+.botao-zap:hover { filter: brightness(1.06); }
+.botao-linha { border-color: currentColor; color: inherit; background: transparent; }
+.botao svg { width: 20px; height: 20px; flex: none; }
+
+/* O adesivo de troca de óleo */
+.adesivo-area { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.adesivo {
+  width: min(100%, 330px);
+  background: #FBFAF4; color: #1C2420;
+  border-radius: 14px;
+  padding: 18px 20px 20px;
+  transform: rotate(-2.5deg);
+  box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 14px 30px rgba(0,0,0,.28);
+  position: relative;
+}
+.adesivo::before { /* faixa amarela impressa do adesivo */
+  content: ""; position: absolute; inset: 0 0 auto; height: 58px;
+  background: var(--amarelo); border-radius: 14px 14px 0 0;
+}
+.adesivo header { position: relative; display: flex; justify-content: space-between; align-items: baseline; min-height: 40px; }
+.adesivo header strong { font-family: var(--display); font-size: 1.55rem; font-weight: 800; }
+.adesivo header span { font-size: 0.82rem; font-weight: 600; }
+.adesivo dl { margin: 18px 0 0; display: grid; gap: 10px; }
+.adesivo dl div { display: grid; grid-template-columns: 7.2em 1fr; align-items: end; border-bottom: 1px solid #C9CBC2; padding-bottom: 2px; }
+.adesivo dt { font-size: 0.85rem; color: #4E5A54; }
+.adesivo dd { margin: 0; font-family: var(--mao); font-size: 1.75rem; line-height: 1.1; color: var(--caneta); }
+.adesivo .rodape-adesivo { margin-top: 14px; font-size: 0.78rem; color: #4E5A54; }
+.adesivo.carimbo dd { animation: escrever .45s ease-out; }
+@keyframes escrever { from { opacity: .15; transform: translateX(-4px); } to { opacity: 1; transform: none; } }
+
+.calc { width: min(100%, 330px); display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.calc label { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; font-weight: 500; }
+.calc input, .calc select {
+  font: 500 1rem var(--texto); padding: 9px 10px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.35); background: rgba(0,0,0,.18); color: var(--verde-texto);
+  min-width: 0; width: 100%;
+}
+.calc select option { color: #1C2420; }
+.calc-nota { width: min(100%, 330px); font-size: 0.85rem; opacity: 0.8; }
+
+/* Piso: conteúdo */
+main section { padding-block: 72px 8px; }
+.cabeca { display: grid; gap: 10px; max-width: 40em; margin-bottom: 30px; }
+.cabeca h2 { font-size: clamp(2rem, 4.2vw, 3rem); }
+.cabeca p { color: var(--tinta-suave); }
+
+/* Tabela de serviços com cara de ordem de serviço */
+.os { background: var(--papel); border: 1px solid var(--linha); border-radius: 4px; overflow-x: auto; }
+.os table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.os caption { text-align: left; padding: 14px 18px; font-size: 0.9rem; color: var(--tinta-suave); border-bottom: 2px solid var(--tinta); caption-side: top; }
+.os th, .os td { text-align: left; padding: 15px 18px; border-bottom: 1px solid var(--linha); vertical-align: top; }
+.os thead th { font-size: 0.85rem; font-weight: 600; color: var(--tinta-suave); }
+.os tbody th { font-weight: 600; }
+.os tbody th small { display: block; font-weight: 400; color: var(--tinta-suave); font-size: 0.92rem; margin-top: 2px; }
+.os .num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.os tbody tr:last-child > * { border-bottom: 0; }
+.obs { margin-top: 14px; font-size: 0.92rem; color: var(--tinta-suave); max-width: 46em; }
+
+/* Etapas: é uma sequência de verdade */
+.etapas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; counter-reset: etapa; }
+.etapas li { counter-increment: etapa; display: grid; gap: 8px; align-content: start; border-top: 3px solid var(--tinta); padding-top: 14px; }
+.etapas li::before { content: counter(etapa); font-family: var(--display); font-weight: 800; font-size: 2.6rem; line-height: 1; color: var(--verde); }
+:root[data-theme="dark"] .etapas li::before { color: var(--amarelo); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .etapas li::before { color: var(--amarelo); } }
+.etapas h3 { font-size: 1.45rem; }
+.etapas p { color: var(--tinta-suave); }
+
+/* Garantia */
+.garantia { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 36px; align-items: center; }
+.selo {
+  width: 168px; height: 168px; border-radius: 50%;
+  border: 3px solid var(--tinta); display: grid; place-content: center; text-align: center;
+  font-family: var(--display); font-weight: 800; line-height: 0.95;
+}
+.selo b { font-size: 4.2rem; display: block; }
+.selo span { font-size: 1.15rem; }
+.garantia-texto { display: grid; gap: 12px; max-width: 40em; }
+.garantia-texto h2 { font-size: clamp(1.9rem, 3.8vw, 2.7rem); }
+.garantia-texto p { color: var(--tinta-suave); }
+
+/* Onde fica */
+.local { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; }
+.horario { margin: 0; display: grid; gap: 0; background: var(--papel); border: 1px solid var(--linha); border-radius: 4px; }
+.horario div { display: flex; justify-content: space-between; gap: 16px; padding: 13px 18px; border-bottom: 1px solid var(--linha); }
+.horario div:last-child { border-bottom: 0; }
+.horario dt { font-weight: 600; }
+.horario dd { margin: 0; font-variant-numeric: tabular-nums; }
+.fechado { color: var(--alerta); }
+.endereco { display: grid; gap: 14px; align-content: start; }
+.endereco p { color: var(--tinta-suave); }
+.endereco .botao-linha { color: var(--tinta); justify-self: start; }
+.contato-linha { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 600; color: var(--tinta); }
+.contato-linha button { font: 500 0.9rem var(--texto); padding: 6px 12px; border-radius: 6px; border: 1px solid var(--linha); background: var(--papel); color: var(--tinta); cursor: pointer; }
+
+/* Rodapé */
+.rodape { margin-top: 80px; border-top: 1px solid var(--linha); padding-block: 26px 34px; }
+.rodape .miolo { display: flex; justify-content: space-between; gap: 12px 24px; flex-wrap: wrap; font-size: 0.9rem; color: var(--tinta-suave); }
+
+@media (max-width: 900px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 44px; padding-block: 28px 56px; }
+  .etapas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .local { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .topo nav { display: none; }
+  .etapas { grid-template-columns: minmax(0, 1fr); }
+  .garantia { grid-template-columns: minmax(0, 1fr); justify-items: start; }
+  .selo { width: 136px; height: 136px; }
+  .selo b { font-size: 3.4rem; }
+  .calc { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .adesivo.carimbo dd { animation: none; }
+  html { scroll-behavior: auto; }
+}
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+
+<div class="parede">
+  <div class="faixa">
+    <div class="miolo">
+      <header class="topo">
+        <a class="marca" href="#inicio" id="inicio">
+          <strong>Bertolini</strong>
+          <span>Mecânica geral na Mooca desde 1987</span>
+        </a>
+        <nav aria-label="Seções">
+          <a href="#servicos">Serviços e preços</a>
+          <a href="#como-funciona">Como funciona</a>
+          <a href="#onde-fica">Onde fica</a>
+        </nav>
+      </header>
+
+      <div class="hero">
+        <div>
+          <h1>Seu carro volta com a peça velha no banco do passageiro.</h1>
+          <p class="lead">Antes de abrir o capô, você recebe o orçamento por escrito, com foto de cada problema. Só trocamos o que você aprovar, e a peça antiga fica com você para conferir.</p>
+          <div class="acoes">
+            <a class="botao botao-zap js-zap" href="#onde-fica">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.3-.9.9-.9 2.2s.9 2.5 1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.7.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3Z"/></svg>
+              Pedir orçamento pelo WhatsApp
+            </a>
+            <a class="botao botao-linha" href="#servicos">Ver preços</a>
+          </div>
+        </div>
+
+        <div class="adesivo-area">
+          <div class="adesivo" id="adesivo" aria-live="polite">
+            <header>
+              <strong>Próxima troca</strong>
+              <span>Bertolini</span>
+            </header>
+            <dl>
+              <div><dt>Óleo</dt><dd id="a-oleo">Sintético 5W30</dd></div>
+              <div><dt>Com</dt><dd id="a-km">58.200 km</dd></div>
+              <div><dt>Ou em</dt><dd id="a-data">—</dd></div>
+            </dl>
+            <p class="rodape-adesivo">O que vencer primeiro. Filtro de óleo trocado junto.</p>
+          </div>
+          <form class="calc" id="calc" aria-label="Calcular próxima troca de óleo">
+            <label for="km">Km atual do carro
+              <input id="km" name="km" type="text" inputmode="numeric" autocomplete="off" value="48.200">
+            </label>
+            <label for="tipo">Tipo de óleo
+              <select id="tipo" name="tipo">
+                <option value="mineral">Mineral</option>
+                <option value="semi">Semissintético</option>
+                <option value="sintetico" selected>Sintético</option>
+              </select>
+            </label>
+          </form>
+          <p class="calc-nota">Digite a quilometragem que aparece no painel e veja quando seu carro precisa voltar. O manual do fabricante sempre vale mais que esta conta.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main class="faixa">
+  <div class="miolo">
+    <section id="servicos" aria-labelledby="t-servicos">
+      <div class="cabeca">
+        <h2 id="t-servicos">Serviços e preços</h2>
+        <p>Valores de mão de obra para carros de passeio. Peças são orçadas à parte, com a marca escrita no orçamento.</p>
+      </div>
+      <div class="os">
+        <table>
+          <caption>Tabela de mão de obra, válida para outubro de 2026</caption>
+          <thead>
+            <tr><th scope="col">Serviço</th><th scope="col" class="num">Tempo médio</th><th scope="col" class="num">A partir de</th></tr>
+          </thead>
+          <tbody>
+            <tr><th scope="row">Troca de óleo e filtro<small>Inclui conferência de fluidos e pneus</small></th><td class="num">40 min</td><td class="num">R$ 60</td></tr>
+            <tr><th scope="row">Alinhamento e balanceamento<small>As quatro rodas, com relatório impresso</small></th><td class="num">1 h</td><td class="num">R$ 120</td></tr>
+            <tr><th scope="row">Pastilhas de freio dianteiras<small>Com medição do disco antes da troca</small></th><td class="num">1 h 30</td><td class="num">R$ 150</td></tr>
+            <tr><th scope="row">Diagnóstico com scanner<small>Leitura da injeção eletrônica e luz de anomalia</small></th><td class="num">30 min</td><td class="num">R$ 90</td></tr>
+            <tr><th scope="row">Amortecedores dianteiros<small>Par, com kit de batente e coxim conferidos</small></th><td class="num">3 h</td><td class="num">R$ 280</td></tr>
+            <tr><th scope="row">Higienização do ar-condicionado<small>Troca do filtro de cabine incluída</small></th><td class="num">50 min</td><td class="num">R$ 110</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="obs">Se o diagnóstico virar serviço aqui, o valor dele é descontado do total.</p>
+    </section>
+
+    <section id="como-funciona" aria-labelledby="t-como">
+      <div class="cabeca">
+        <h2 id="t-como">Do primeiro contato até a retirada</h2>
+      </div>
+      <ol class="etapas">
+        <li><h3>Você conta o problema</h3><p>Barulho, luz no painel ou só a revisão. Pode mandar áudio e vídeo pelo WhatsApp.</p></li>
+        <li><h3>A gente avalia</h3><p>Com o carro na rampa, fotografamos o que encontramos e montamos o orçamento item por item.</p></li>
+        <li><h3>Você aprova</h3><p>Responde quais itens quer fazer agora e quais podem esperar. Nada começa sem a sua resposta.</p></li>
+        <li><h3>Você retira</h3><p>Com nota fiscal, garantia por escrito e as peças trocadas num saco no banco do passageiro.</p></li>
+      </ol>
+    </section>
+
+    <section aria-labelledby="t-garantia">
+      <div class="garantia">
+        <div class="selo" aria-hidden="true"><b>90</b><span>dias</span></div>
+        <div class="garantia-texto">
+          <h2 id="t-garantia">Garantia de 90 dias em peça e mão de obra</h2>
+          <p>Voltou o mesmo barulho? Traga o carro com a nota que a gente refaz sem custo. O prazo vale a partir da data de retirada e fica escrito na sua ordem de serviço.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="onde-fica" aria-labelledby="t-onde">
+      <div class="cabeca">
+        <h2 id="t-onde">Onde fica e quando abre</h2>
+      </div>
+      <div class="local">
+        <dl class="horario">
+          <div><dt>Segunda a sexta</dt><dd>7h30 às 18h</dd></div>
+          <div><dt>Sábado</dt><dd>8h às 12h</dd></div>
+          <div><dt>Domingo e feriados</dt><dd class="fechado">Fechado</dd></div>
+        </dl>
+        <div class="endereco">
+          <p>Na Mooca, a duas quadras do estádio do Juventus. Tem espaço para deixar o carro na frente enquanto conversa com o mecânico.</p>
+          <div class="contato-linha">
+            <span>WhatsApp <span id="numero"></span></span>
+            <button type="button" id="copiar">Copiar número</button>
+          </div>
+          <a class="botao botao-linha" href="https://www.google.com/maps/search/?api=1&amp;query=Mooca%2C+S%C3%A3o+Paulo" target="_blank" rel="noopener">Abrir no Google Maps</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="rodape faixa">
+  <div class="miolo">
+    <span>Mecânica Bertolini, Mooca, São Paulo</span>
+    <span>Projeto conceitual de portfólio</span>
+  </div>
+</footer>
+
+<script>
+// Troque pelo número real da oficina (DDI + DDD + número, só dígitos).
+const WHATSAPP = "5511900000000";
+const WHATSAPP_EXIBIDO = "(11) 90000-0000";
+
+const INTERVALOS = {
+  mineral:   { nome: "Mineral 20W50",      km: 5000,  meses: 6 },
+  semi:      { nome: "Semissintético 10W40", km: 7500, meses: 6 },
+  sintetico: { nome: "Sintético 5W30",     km: 10000, meses: 12 }
+};
+
+const fmtKm = n => n.toLocaleString("pt-BR") + " km";
+const fmtData = d => d.toLocaleDateString("pt-BR");
+
+function lerKm(texto) {
+  const n = parseInt(String(texto).replace(/\D/g, ""), 10);
+  return Number.isFinite(n) ? n : null;
+}
+
+function atualizar() {
+  const km = lerKm(document.getElementById("km").value);
+  const t = INTERVALOS[document.getElementById("tipo").value];
+  const data = new Date();
+  data.setMonth(data.getMonth() + t.meses);
+
+  document.getElementById("a-oleo").textContent = t.nome;
+  document.getElementById("a-km").textContent = km === null ? "—" : fmtKm(km + t.km);
+  document.getElementById("a-data").textContent = fmtData(data);
+
+  const adesivo = document.getElementById("adesivo");
+  adesivo.classList.remove("carimbo");
+  void adesivo.offsetWidth;
+  adesivo.classList.add("carimbo");
+}
+
+const campoKm = document.getElementById("km");
+campoKm.addEventListener("input", () => {
+  const n = lerKm(campoKm.value);
+  if (n !== null) campoKm.value = n.toLocaleString("pt-BR");
+  atualizar();
+});
+document.getElementById("tipo").addEventListener("change", atualizar);
+document.getElementById("calc").addEventListener("submit", e => e.preventDefault());
+atualizar();
+document.getElementById("adesivo").classList.remove("carimbo");
+
+// WhatsApp
+document.getElementById("numero").textContent = WHATSAPP_EXIBIDO;
+const msg = encodeURIComponent("Olá! Gostaria de um orçamento para o meu carro.");
+document.querySelectorAll(".js-zap").forEach(a => {
+  a.href = "https://wa.me/" + WHATSAPP + "?text=" + msg;
+  a.target = "_blank";
+  a.rel = "noopener";
+});
+
+document.getElementById("copiar").addEventListener("click", e => {
+  const btn = e.currentTarget;
+  const ok = () => { btn.textContent = "Número copiado"; setTimeout(() => btn.textContent = "Copiar número", 2000); };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(WHATSAPP_EXIBIDO).then(ok).catch(() => selecionar());
+  } else selecionar();
+  function selecionar() {
+    const r = document.createRange();
+    r.selectNodeContents(document.getElementById("numero"));
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+});
+</script>
+
+</body>
+</html>
